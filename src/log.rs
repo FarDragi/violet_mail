@@ -1,3 +1,4 @@
+use log::Level;
 use serde::Serialize;
 use serde_repr::Serialize_repr;
 
@@ -58,6 +59,18 @@ impl From<VioletLogSeverity> for u8 {
             VioletLogSeverity::Warning => 3,
             VioletLogSeverity::Info => 4,
             VioletLogSeverity::Verbose => 5
+        }
+    }
+}
+
+impl From<Level> for VioletLogSeverity {
+    fn from(el: Level) -> Self {
+        match el {
+            Level::Error => VioletLogSeverity::Error,
+            Level::Warn => VioletLogSeverity::Warning,
+            Level::Info => VioletLogSeverity::Info,
+            Level::Debug => VioletLogSeverity::Verbose,
+            Level::Trace => VioletLogSeverity::NoDefined,
         }
     }
 }
