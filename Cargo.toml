@@ -4,7 +4,16 @@ version = "0.1.0"
 authors = ["Gabriel-Paulucci <gabrielpauluccimunizmendes@gmail.com>"]
 edition = "2018"
 license = "MIT"
+description = "Wrapper for violet"
+homepage = "https://github.com/FarDragi/violet_mail"
+repository = "https://github.com/FarDragi/violet_mail.git"
+readme = "README.md"
+keywords = ["violet", "mail", "log", "error-handling", "http-api"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+isahc = { version = "1.4.0", features = ["json"] }
+serde = { version = "1.0.126", features = ["derive"] }
+serde_repr = { version = "0.1.7" }
+serde_json = { version = "1.0.64" }
