@@ -75,7 +75,7 @@ impl HttpVioletData {
         let log_vio = VioletLog::new(severity, title, message);
         let log_vio_json = serde_json::to_string(&log_vio)?;
 
-        let retorno = Request::post(format!(
+        Request::post(format!(
             "https://violet.zuraaa.com/api/apps/{}/events",
             self.config.indentifier
         ))
@@ -85,8 +85,6 @@ impl HttpVioletData {
         .body(log_vio_json)?
         .send_async()
         .await?;
-        let body = retorno.status();
-        println!("{:?}", body);
         Ok(())
     }
 }
