@@ -97,6 +97,8 @@ impl log::Log for HttpVioletData {
     fn flush(&self) {
         todo!()
     }
+
+    fn log(&self, record: &Record) {
         let pointer_data = (record.level(), record.args().to_string());
 
         if self.config.send_err_async {
@@ -126,3 +128,4 @@ impl log::Log for HttpVioletData {
         }
     }
 }
+
