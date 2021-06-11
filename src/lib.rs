@@ -1,7 +1,5 @@
-pub mod client;
-pub mod log;
+mod client;
+mod log;
 
-pub mod prelude {
-    pub use super::client::*;
-    pub use super::log::*;
-}
+pub use crate::log::*;
+pub use client::*;
