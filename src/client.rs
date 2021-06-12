@@ -1,5 +1,6 @@
 use std::{thread, time::Duration};
 
+use chrono::Utc;
 use isahc::{config::Configurable, Request, RequestExt};
 
 use log::{Metadata, Record};
@@ -19,6 +20,7 @@ pub struct VioletBuilder {
     token: String,
     send_err_async: bool,
     default_title: String,
+    send_level: VioletLogSeverity,
 }
 
 impl VioletBuilder {
@@ -28,6 +30,7 @@ impl VioletBuilder {
             indentifier,
             default_title: env!("CARGO_PKG_NAME").into(),
             send_err_async: false,
+            send_level: VioletLogSeverity::Error,
         }
     }
 
@@ -38,6 +41,11 @@ impl VioletBuilder {
 
     pub fn set_title(mut self, title: impl AsRef<str>) -> Self {
         self.default_title = title.as_ref().to_string();
+        self
+    }
+
+    pub fn set_send_min_level(mut self, level: VioletLogSeverity) -> Self {
+        self.send_level = level;
         self
     }
 
@@ -101,6 +109,21 @@ impl log::Log for HttpVioletData {
     fn log(&self, record: &Record) {
         let pointer_data = (record.level(), record.args().to_string());
 
+        {
+            let level = crate::convert_level_to_string(&pointer_data.0);
+            let data = Utc::now();
+            let data_formated = data.format("%d/%m/%Y %H:%M:%S").to_string();
+            println!("[({}) ({})]: {}", data_formated, level, &pointer_data.1)
+        }
+
+        {
+            let level_u8 = u8::from(&self.config.send_level);
+            let level_event_u8 = crate::convert_level_to_u8(&pointer_data.0);
+            if level_event_u8 > level_u8 {
+                return;
+            }
+        }
+
         if self.config.send_err_async {
             let cloned_self = self.clone();
             thread::spawn(move || {
@@ -128,4 +151,3 @@ impl log::Log for HttpVioletData {
         }
     }
 }
-
