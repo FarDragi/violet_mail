@@ -50,8 +50,8 @@ impl From<u8> for VioletLogSeverity {
     }
 }
 
-impl From<&VioletLogSeverity> for u8 {
-    fn from(val: &VioletLogSeverity) -> Self {
+impl From<VioletLogSeverity> for u8 {
+    fn from(val: VioletLogSeverity) -> Self {
         match val {
             VioletLogSeverity::NoDefined => 0,
             VioletLogSeverity::Severe => 1,

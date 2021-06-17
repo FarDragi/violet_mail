@@ -13,10 +13,11 @@ keywords = ["violet", "mail", "log", "error-handling", "http-api"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-isahc = { version = "1.4.0", features = ["json"] }
-serde = { version = "1.0.126", features = ["derive"] }
-serde_repr = { version = "0.1.7" }
-serde_json = { version = "1.0.64" }
-log = { version = "0.4.14" }
-futures = { version = "0.3.15" }
+isahc = { version="1.4.0", features=["json"] }
+serde = { version="1.0.126", features=["derive"] }
+serde_repr = { version="0.1.7" }
+serde_json = { version="1.0.64" }
+log = { version="0.4.14" }
+futures = { version="0.3.15" }
 chrono = "0.4.19"
+lazy_static = "1.4.0"
