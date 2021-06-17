@@ -111,7 +111,7 @@ impl HttpVioletData {
             .ok_or("Violet não foi inicializada")?
             .clone();
         println!("{:?}", &log_vio_json);
-        let aaa = Request::post(format!(
+        Request::post(format!(
             "https://violet.zuraaa.com/api/apps/{}/events",
             config.indentifier
         ))
