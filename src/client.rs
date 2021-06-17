@@ -18,7 +18,8 @@ lazy_static::lazy_static! {
 }
 
 #[derive(Clone)]
-struct HttpVioletData {
+#[non_exhaustive]
+pub struct HttpVioletData {
     config: Arc<RwLock<Option<VioletBuilder>>>,
 }
 
@@ -81,6 +82,10 @@ impl HttpVioletData {
         }
     }
 
+    pub fn get_http() -> &'static Self {
+        &CLIENT
+    }
+
     fn set_config(&self, config: VioletBuilder) -> GResult<()> {
         *self
             .config
@@ -89,7 +94,7 @@ impl HttpVioletData {
         Ok(())
     }
 
-    async fn send_data(
+    pub async fn send_data(
         &self,
         title: String,
         severity: VioletLogSeverity,
@@ -105,8 +110,8 @@ impl HttpVioletData {
             .as_ref()
             .ok_or("Violet não foi inicializada")?
             .clone();
-
-        Request::post(format!(
+        println!("{:?}", &log_vio_json);
+        let aaa = Request::post(format!(
             "https://violet.zuraaa.com/api/apps/{}/events",
             config.indentifier
         ))
@@ -116,6 +121,8 @@ impl HttpVioletData {
         .body(log_vio_json)?
         .send_async()
         .await?;
+
+        println!("{}", aaa.status());
         Ok(())
     }
 }
@@ -174,7 +181,7 @@ impl log::Log for HttpVioletData {
             futures::executor::block_on(async {
                 self.send_data(config.default_title, pointer_data.0.into(), pointer_data.1)
                     .await
-                    .ok();
+                    .expect("fudeu")
             })
         }
     }
