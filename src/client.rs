@@ -121,8 +121,6 @@ impl HttpVioletData {
         .body(log_vio_json)?
         .send_async()
         .await?;
-
-        println!("{}", aaa.status());
         Ok(())
     }
 }
@@ -181,7 +179,7 @@ impl log::Log for HttpVioletData {
             futures::executor::block_on(async {
                 self.send_data(config.default_title, pointer_data.0.into(), pointer_data.1)
                     .await
-                    .expect("fudeu")
+                    .ok();
             })
         }
     }
