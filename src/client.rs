@@ -4,6 +4,8 @@ use std::{
     time::Duration,
 };
 
+use colored::*;
+
 use chrono::Utc;
 use isahc::{config::Configurable, Request, RequestExt};
 
@@ -148,7 +150,7 @@ impl log::Log for HttpVioletData {
             .unwrap()
             .clone();
 
-        let pointer_data = (record.level(), record.args().to_string());
+        let mut pointer_data = (record.level(), record.args().to_string());
 
         {
             let level = crate::convert_level_to_string(&pointer_data.0);
@@ -164,6 +166,8 @@ impl log::Log for HttpVioletData {
                 return;
             }
         }
+
+        pointer_data.1 = pointer_data.1.normal().clear().to_string();
 
         if config.send_err_async {
             let cloned_self = self.clone();
