@@ -8,7 +8,6 @@ use chrono::Utc;
 use isahc::{config::Configurable, Request, RequestExt};
 
 use log::{set_logger, Metadata, Record};
-use regex::Regex;
 
 use crate::{VioletLog, VioletLogSeverity};
 pub type GenericError = Box<dyn std::error::Error + Send + Sync + 'static>;
@@ -164,11 +163,6 @@ impl log::Log for HttpVioletData {
             if level_event_u8 > level_u8 {
                 return;
             }
-        }
-
-        if let Ok(regex) = Regex::new(r"\x1b\[[0-9;]*m//g") {
-            let after = regex.replace_all(&pointer_data.1, "");
-            pointer_data.1 = after.to_string();
         }
 
         if config.send_err_async {
