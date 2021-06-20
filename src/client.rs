@@ -4,12 +4,11 @@ use std::{
     time::Duration,
 };
 
-use colored::*;
-
 use chrono::Utc;
 use isahc::{config::Configurable, Request, RequestExt};
 
 use log::{set_logger, Metadata, Record};
+use regex::Regex;
 
 use crate::{VioletLog, VioletLogSeverity};
 pub type GenericError = Box<dyn std::error::Error + Send + Sync + 'static>;
@@ -167,7 +166,10 @@ impl log::Log for HttpVioletData {
             }
         }
 
-        pointer_data.1 = pointer_data.1.normal().clear().to_string();
+        if let Ok(regex) = Regex::new(r"\x1b\[[0-9;]*m//g") {
+            let after = regex.replace_all(&pointer_data.1, "");
+            pointer_data.1 = after.to_string();
+        }
 
         if config.send_err_async {
             let cloned_self = self.clone();
