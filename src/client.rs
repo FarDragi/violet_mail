@@ -148,7 +148,7 @@ impl log::Log for HttpVioletData {
             .unwrap()
             .clone();
 
-        let mut pointer_data = (record.level(), record.args().to_string());
+        let pointer_data = (record.level(), record.args().to_string());
 
         {
             let level = crate::convert_level_to_string(&pointer_data.0);
